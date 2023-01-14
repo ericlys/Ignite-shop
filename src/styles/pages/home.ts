@@ -39,22 +39,37 @@ export const Product = styled('div', {
     alignItems: 'center',
     justifyContent: 'space-between',
 
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    backgroundColor: 'rgba(32, 32, 32, 0.9)',
 
     transform: 'translateY(110%)',
     opacity: 0,
     transition: 'all 0.2s ease-in-out',
 
-    strong: {
-      fontSize: '$lg',
-      color: '$gray100'
+    div: {
+      display: 'flex',
+      flexDirection: 'column',
+
+      strong: {
+        fontSize: '$lg',
+        color: '$gray100'
+      },
+  
+      span: {
+        fontSize: '$xl',
+        fontWeight: 'bold',
+        color: '$green300'
+      },
     },
 
-    span: {
-      fontSize: '$xl',
-      fontWeight: 'bold',
-      color: '$green300'
-    },
+
+    button: {
+      borderRadius: 6,
+      padding: '0.75rem',
+      background: '$green500',
+      border: 'none',
+      cursor: 'pointer'
+    }
+
   },
 
   '&:hover': {
