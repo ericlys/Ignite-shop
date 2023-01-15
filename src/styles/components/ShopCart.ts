@@ -71,7 +71,7 @@ export const Product = styled('div',{
   gap: '1.25rem',
   width: '360px',
 
-  div: {
+  '& > div': {
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
@@ -94,17 +94,30 @@ export const Product = styled('div',{
       color: '$green500',
       background: 'transparent',
       border: 0,
-      marginTop: 8,
       fontSize: '$md',
       fontWeight: 'bold',
       cursor: 'pointer',
 
       '&:hover': {
         color: '$green300',
+      },
+      
+      '&:disabled': {
+        opacity: 0.6,
+        cursor: 'not-allowed'
+      },
+    },
 
-      }
+    section: {
+      marginTop: 8,
+      display: 'flex',
+      flexDirection: 'row',
+      gap: '1rem',
+      alignItems: 'center',
+      justifyContent: 'center'
     }
-  }
+  },
+
 })
 
 export const ImageContainer = styled('div', {

@@ -1,10 +1,13 @@
 import * as Dialog from "@radix-ui/react-dialog";
+import axios from "axios";
 import Image from "next/image";
 import { X } from "phosphor-react";
+import { useState } from "react";
 import { useShoppingCart } from "use-shopping-cart";
 import { IProduct } from "../@types/ProductType";
 import { CartSummary, CloseButton, Content, ImageContainer, Product, ProductsWrapper } from "../styles/components/ShopCart";
 import { formatterPrice } from "../utils/formatter";
+import InputQuantity from "./InputQuantity";
 
 
 export default function ShopCart() {
@@ -12,13 +15,44 @@ export default function ShopCart() {
     cartDetails,
     cartCount,
     totalPrice,
-    removeItem
+    removeItem,
+    decrementItem,
+    incrementItem
   } = useShoppingCart();
+
+  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false)
 
   const products: IProduct[] = Object.keys(cartDetails!).map(key => cartDetails![key])
 
   function handleRemoveItem(id: string) {
     removeItem(id)
+  }
+
+  function HandleIncrementItem(id: string) {
+    incrementItem(id)
+  }
+
+  function HandleDecrementItem(id: string) {
+    decrementItem(id)
+  }
+
+  async function handleBuyProduct() {
+    try {
+      setIsCreatingCheckoutSession(true);
+
+      const response = await axios.post('/api/checkout', {
+        products: products
+      })
+
+      const { checkoutUrl } = response.data;
+
+      window.location.href = checkoutUrl
+
+    } catch(err){
+      //Conectar com uma ferramenta de observabilidade (Datadog/Sentry)
+      setIsCreatingCheckoutSession(false)
+      alert('Falha ao redirecionar ao checkout!')
+    }
   }
 
   return (
@@ -41,7 +75,15 @@ export default function ShopCart() {
                   <div>
                     <strong>{product.name}</strong>
                     <span>{formatterPrice(product.price)}</span>
-                    <button onClick={() => handleRemoveItem(product.id)}>Remover</button>
+
+                    <section>
+                      <InputQuantity 
+                        amount={product.quantity!}
+                        onDecrement={() => HandleDecrementItem(product.id)}
+                        onIncrement={() => HandleIncrementItem(product.id)}
+                      />
+                      <button onClick={() => handleRemoveItem(product.id)}>Remover</button>
+                    </section>
                   </div> 
                 </Product>
               )
@@ -67,7 +109,10 @@ export default function ShopCart() {
               </strong>
             </div>
 
-            <button>
+            <button 
+              onClick={handleBuyProduct}
+              disabled={isCreatingCheckoutSession}
+            >
               Finalizar compra
             </button>
           </CartSummary>
