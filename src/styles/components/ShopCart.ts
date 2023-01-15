@@ -14,12 +14,13 @@ const close = keyframes({
 });
 
 export const Content = styled(Dialog.Content, {
-  position: 'absolute',
+  position: 'fixed',
   top: 0,
   right: 0,
-  height: '100vh',
+  bottom: 0,
   background: '$gray800',
   padding: '3rem',
+  minWidth: 480,
 
   '&[data-state="open"]': {
     animation:`${show} 400ms`,
@@ -34,6 +35,13 @@ export const Content = styled(Dialog.Content, {
     fontWeight: 'bold',
     color: '$white',
     marginTop: '1.25rem'
+  },
+
+  section: {
+    height: '100%',
+    display:'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
   }
 })
 
@@ -89,7 +97,12 @@ export const Product = styled('div',{
       marginTop: 8,
       fontSize: '$md',
       fontWeight: 'bold',
-      cursor: 'pointer'
+      cursor: 'pointer',
+
+      '&:hover': {
+        color: '$green300',
+
+      }
     }
   }
 })
@@ -102,12 +115,59 @@ export const ImageContainer = styled('div', {
   borderRadius: 8,
   padding: '0.25rem',
 
-  // display: 'flex',
-  // alignItems: 'center',
-  // justifyContent: 'center',
-
   img: {
     objectFit: 'cover'
+  }
+})
+
+export const CartSummary = styled('div', {
+
+  '&>div': {
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'space-between',
+  },
+
+  span: {
+    fontSize: '$sm',
+    fontWeight: 400,
+    lineHeight: '160%',
+    color: '$gray100',
+  },
+
+  strong: {
+    fontSize: '$md',
+    fontWeight: 700,
+    lineHeight: '160%',
+    color: '$gray100',
+  },
+
+  button: {
+    margin: '3rem 0',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+
+    backgroundColor: '$green500',
+    border: 0,
+    color: '$white',
+    borderRadius: 8,
+    padding: '1.25rem',
+    minHeight: '4.25rem',
+    fontWeight: 'bold',
+    fontSize: '$md',
+    transition: 'background-color 0.4s',
+    cursor: 'pointer',
+
+    '&:disabled': {
+      opacity: 0.6,
+      cursor: 'not-allowed',
+    },
+
+    '&:not(:disabled):hover': {
+      backgroundColor: '$green300',
+    },
   }
 
 })

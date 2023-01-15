@@ -1,33 +1,25 @@
-import * as Dialog from '@radix-ui/react-dialog'
 import type { AppProps } from 'next/app'
-import Image from 'next/image'
-import logoImg from '../assets/logo.svg'
-import ShopCart from '../components/ShopCart'
+import { CartProvider } from 'use-shopping-cart'
+import DefaultLayout from '../layout/DefaultLayout'
 import { globalStyles } from '../styles/global'
-import { BagIcon, Container, Header } from '../styles/pages/app'
 
 globalStyles()
 
 export default function App({ Component, pageProps }: AppProps) {
   
   return (
-  <Container>
-    <Header>
-      <Image src={logoImg} alt="" />
-
-      <Dialog.Root>
-        <Dialog.Trigger asChild>
-          <button>
-            <BagIcon />
-          </button>
-        </Dialog.Trigger>
-
-        <ShopCart />
-      
-      </Dialog.Root>
-    </Header>
-
-    <Component {...pageProps} />
-  </Container>
+    <CartProvider
+      mode="payment"
+      cartMode="client-only"
+      stripe={process.env.STRIPE_PUBLIC_KEY!}
+      successUrl={`${process.env.NEXT_URL}/success?session_id={CHECKOUT_SESSION_ID}`}
+      cancelUrl={`${process.env.NEXT_URL}/`}
+      currency="BRL"
+      shouldPersist={true}
+    >
+      <DefaultLayout>
+        <Component {...pageProps} />
+      </DefaultLayout>
+    </CartProvider>
   )
 }

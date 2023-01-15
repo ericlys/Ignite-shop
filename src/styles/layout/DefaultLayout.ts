@@ -1,4 +1,3 @@
-import { Handbag } from 'phosphor-react';
 import { styled } from '..';
 
 export const Container = styled('div', {
@@ -23,12 +22,24 @@ export const Header = styled('header', {
     padding: '0.75rem',
     background: '$gray800',
     border: 'none',
-    cursor: 'pointer'
-  }
-})
+    cursor: 'pointer',
+    position: 'relative',
 
-export const BagIcon = styled(Handbag, {
-  width: 24,
-  height: 24,
-  color: '$white'
+    span: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      
+      position: 'absolute',
+      border: '3px solid $gray900',
+      color: '$white',
+      width: '1.5rem',
+      height: '1.5rem',
+      borderRadius: '99px',
+      background: '$green500',
+      top: -5,
+      right: -7,
+    },
+    
+  }
 })

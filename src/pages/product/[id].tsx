@@ -1,46 +1,56 @@
-import axios from "axios"
 import { GetStaticPaths, GetStaticProps } from "next"
 import Head from "next/head"
 import Image from "next/image"
 import { useRouter } from "next/router"
-import { useState } from "react"
 import Stripe from "stripe"
+import { useShoppingCart } from "use-shopping-cart"
+import { IProduct } from "../../@types/ProductType"
 import { stripe } from "../../lib/stripe"
 import { ImageContainer, ProductContainer, ProductDetails } from "../../styles/pages/product"
+import { formatterPrice } from "../../utils/formatter"
 
-interface ProductProps{
-  product: {
-    id: string;
-    name: string;
-    imageUrl: string;
-    price: string;
-    description: string;
-    defaultPriceId: string;
-  }
+// interface ProductProps{
+//   product: {
+//     id: string;
+//     name: string;
+//     imageUrl: string;
+//     price: string;
+//     description: string;
+//     defaultPriceId: string;
+//   }
+// }
+
+export interface ProductProps {
+  product: IProduct;
 }
 
 export default function Product({ product }: ProductProps) {
   const { isFallback } = useRouter()
+  const { addItem } = useShoppingCart()
 
-  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false)
+  // const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false)
 
-  async function handleBuyProduct() {
-    try {
-      setIsCreatingCheckoutSession(true);
+  // async function handleBuyProduct() {
+  //   try {
+  //     setIsCreatingCheckoutSession(true);
 
-      const response = await axios.post('/api/checkout', {
-        priceId: product.defaultPriceId
-      })
+  //     const response = await axios.post('/api/checkout', {
+  //       priceId: product.defaultPriceId
+  //     })
 
-      const { checkoutUrl } = response.data;
+  //     const { checkoutUrl } = response.data;
 
-      window.location.href = checkoutUrl
+  //     window.location.href = checkoutUrl
 
-    } catch(err){
-      //Conectar com uma ferramenta de observabilidade (Datadog/Sentry)
-      setIsCreatingCheckoutSession(false)
-      alert('Falha ao redirecionar ao checkout!')
-    }
+  //   } catch(err){
+  //     //Conectar com uma ferramenta de observabilidade (Datadog/Sentry)
+  //     setIsCreatingCheckoutSession(false)
+  //     alert('Falha ao redirecionar ao checkout!')
+  //   }
+  // }
+
+  const handleAddProductToCart = () => {
+    addItem(product)
   }
 
   if(isFallback){
@@ -60,12 +70,14 @@ export default function Product({ product }: ProductProps) {
 
         <ProductDetails>
           <h1>{product.name}</h1>
-          <span>{product.price}</span>
+          <span>{formatterPrice(product.price)}</span>
 
           <p>{product.description}</p>
 
-          <button disabled={isCreatingCheckoutSession} onClick={handleBuyProduct}>
-            Comprar agora
+          <button 
+          // disabled={isCreatingCheckoutSession}
+           onClick={handleAddProductToCart}>
+            Colocar na sacola
           </button>
         </ProductDetails>
       </ProductContainer>
@@ -94,13 +106,10 @@ export const getStaticProps: GetStaticProps<any, {id: string}> = async ({ params
   return {
     props: {
       product: {
-          id: product.id,
-          name: product.name,
-          imageUrl: product.images[0],
-          price: new Intl.NumberFormat('pt-BR', {
-            style: 'currency',
-            currency: 'BRL',
-        }).format(price.unit_amount! / 100),
+        id: product.id,
+        name: product.name,
+        imageUrl: product.images[0],
+        price: price.unit_amount!,
         description: product.description,
         defaultPriceId: price.id
       }
