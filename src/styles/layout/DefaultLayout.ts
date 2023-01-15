@@ -15,7 +15,7 @@ export const Header = styled('header', {
   margin: '0 auto',
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'space-between',
+  justifyContent: 'center',
 
   button: {
     borderRadius: 6,
@@ -24,6 +24,7 @@ export const Header = styled('header', {
     border: 'none',
     cursor: 'pointer',
     position: 'relative',
+    marginLeft: 'auto',
 
     span: {
       display: 'flex',
