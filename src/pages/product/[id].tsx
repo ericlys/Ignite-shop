@@ -5,6 +5,7 @@ import { useRouter } from "next/router"
 import Stripe from "stripe"
 import { useShoppingCart } from "use-shopping-cart"
 import { IProduct } from "../../@types/ProductType"
+import { ProductSkeleton } from "../../components/ProductSkeleton"
 import { stripe } from "../../lib/stripe"
 import { ImageContainer, ProductContainer, ProductDetails } from "../../styles/pages/product"
 import { formatterPrice } from "../../utils/formatter"
@@ -33,7 +34,7 @@ export default function Product({ product }: ProductProps) {
   }
 
   if(isFallback){
-    return <p>Loading...</p>
+    return <ProductSkeleton/>
   }
 
   return (
