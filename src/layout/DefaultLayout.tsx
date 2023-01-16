@@ -1,5 +1,6 @@
 import * as Dialog from '@radix-ui/react-dialog';
 import Image from "next/image";
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Handbag } from 'phosphor-react';
 import { ReactNode } from 'react';
@@ -24,7 +25,9 @@ export default function DefaultLayout({children, ...props}: DefaultLayoutProps){
   return(
     <Container>
     <Header>
-      <Image src={logoImg} alt="" />
+      <Link href="/">
+        <Image src={logoImg} alt="" />
+      </Link>
 
     {
       showCart &&

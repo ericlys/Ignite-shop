@@ -111,7 +111,7 @@ export default function ShopCart() {
 
             <button 
               onClick={handleBuyProduct}
-              disabled={isCreatingCheckoutSession}
+              disabled={isCreatingCheckoutSession || cartCount! < 1}
             >
               Finalizar compra
             </button>

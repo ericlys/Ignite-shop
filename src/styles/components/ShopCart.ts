@@ -21,6 +21,7 @@ export const Content = styled(Dialog.Content, {
   background: '$gray800',
   padding: '3rem',
   minWidth: 480,
+  zIndex: 9999,
 
   '&[data-state="open"]': {
     animation:`${show} 400ms`,
